@@ -32,6 +32,14 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.nfc.Tag;
+import android.nfc.tech.MifareUltralight;
+import android.util.Log;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import java.nio.charset.StandardCharsets;
+
 public class tela_inicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,6 +47,11 @@ public class tela_inicial extends AppCompatActivity
     public static final String TAG = "NfcDemo";
     private TextView mTextView;
     private NfcAdapter mNfcAdapter;
+
+    PendingIntent pendingIntent;
+    IntentFilter writeTagFilters[];
+    boolean writeMode;
+    Tag mytag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +95,15 @@ public class tela_inicial extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        
-        handleIntent(getIntent());
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter == null) {
+            //nfc not support your device.
+            return;
+        }
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+                getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
     }
 
     @Override
@@ -94,7 +114,8 @@ public class tela_inicial extends AppCompatActivity
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
-        setupForegroundDispatch(this, mNfcAdapter);
+        //setupForegroundDispatch(this, mNfcAdapter);
+        mNfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
     }
 
     @Override
@@ -102,22 +123,62 @@ public class tela_inicial extends AppCompatActivity
         /**
          * Call this before onPause, otherwise an IllegalArgumentException is thrown as well.
          */
-        stopForegroundDispatch(this, mNfcAdapter);
+        //stopForegroundDispatch(this, mNfcAdapter);
+
+        if (mNfcAdapter != null) {
+            mNfcAdapter.disableForegroundDispatch(this);
+        }
 
         super.onPause();
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        /**
-         * This method gets called, when a new Intent gets associated with the current activity instance.
-         * Instead of creating a new activity, onNewIntent will be called. For more information have a look
-         * at the documentation.
-         *
-         * In our case this method gets called, when the user attaches a Tag to the device.
-         */
-        handleIntent(intent);
+    protected void onNewIntent(Intent intent){
+
+        //getTagInfo(intent);
+        //mTextView.setText("NFC Tag Reader:" + readTag(mytag));
+
+        if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())){
+            mytag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            writeTag(mytag,"AAAA");
+            mTextView.setText("Reading NFC Tag:" + readTag(mytag));
+            Toast.makeText(this, "NFC Tag detected", Toast.LENGTH_LONG ).show();
+        }
     }
+
+    private void getTagInfo(Intent intent) {
+        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+    }
+
+    private NdefRecord createRecord(String text) throws UnsupportedEncodingException {
+
+        //create the message in according with the standard
+        String lang = "en";
+        byte[] textBytes = text.getBytes();
+        byte[] langBytes = lang.getBytes("US-ASCII");
+        int langLength = langBytes.length;
+        int textLength = textBytes.length;
+
+        byte[] payload = new byte[1 + langLength + textLength];
+        payload[0] = (byte) langLength;
+
+        // copy langbytes and textbytes into payload
+        System.arraycopy(langBytes, 0, payload, 1, langLength);
+        System.arraycopy(textBytes, 0, payload, 1 + langLength, textLength);
+
+        NdefRecord recordNFC = new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
+        return recordNFC;
+    }
+
+    /*private void write(String text, Tag tag) throws IOException, FormatException {
+
+        NdefRecord[] records = { createRecord(text) };
+        NdefMessage message = new NdefMessage(records);
+        Ndef ndef = Ndef.get(tag);
+        ndef.connect();
+        ndef.writeNdefMessage(message);
+        ndef.close();
+    }*/
 
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
@@ -128,6 +189,8 @@ public class tela_inicial extends AppCompatActivity
 
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 new NdefReaderTask().execute(tag);
+
+                mTextView.setText("DETECTOU TAG 1");
 
             } else {
                 Log.d(TAG, "Wrong mime type: " + type);
@@ -142,6 +205,9 @@ public class tela_inicial extends AppCompatActivity
             for (String tech : techList) {
                 if (searchedTech.equals(tech)) {
                     new NdefReaderTask().execute(tag);
+
+                    mTextView.setText("DETECTOU TAG 2");
+
                     break;
                 }
             }
@@ -302,6 +368,48 @@ public class tela_inicial extends AppCompatActivity
             }*/
             mTextView.setText("NFC Detectado!");
         }
+    }
+
+    //private final String TAG = MifareUltralightTagTester.class.getSimpleName();
+
+    public void writeTag(Tag tag, String tagText) {
+        MifareUltralight ultralight = MifareUltralight.get(tag);
+        try {
+            ultralight.connect();
+            ultralight.writePage(1, tagText.getBytes(StandardCharsets.US_ASCII));
+            /*ultralight.writePage(5, "efgh".getBytes(Charset.forName("US-ASCII")));
+            ultralight.writePage(6, "ijkl".getBytes(Charset.forName("US-ASCII")));
+            ultralight.writePage(7, "mnop".getBytes(Charset.forName("US-ASCII")));*/
+        } catch (IOException e) {
+            //Log.e(TAG, "IOException while closing MifareUltralight...", e);
+        } finally {
+            try {
+                ultralight.close();
+            } catch (IOException e) {
+                //Log.e(TAG, "IOException while closing MifareUltralight...", e);
+            }
+        }
+    }
+
+    public String readTag(Tag tag) {
+        MifareUltralight mifare = MifareUltralight.get(tag);
+        try {
+            mifare.connect();
+            byte[] payload = mifare.readPages(1);
+            return new String(payload, Charset.forName("US-ASCII"));
+        } catch (IOException e) {
+
+        } finally {
+            if (mifare != null) {
+                try {
+                    mifare.close();
+                }
+                catch (IOException e) {
+                    //Log.e(TAG, "Error closing tag...", e);
+                }
+            }
+        }
+        return null;
     }
 }
 
