@@ -15,13 +15,11 @@ import android.view.MenuItem;
 
 import android.content.Intent;
 import android.nfc.NfcAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class tela_inicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView mTextView;
     private NfcAdapter mNfcAdapter;
 
     @Override
@@ -31,7 +29,6 @@ public class tela_inicial extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTextView = (TextView) findViewById(R.id.textView_explanation);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (mNfcAdapter == null) {
@@ -46,11 +43,9 @@ public class tela_inicial extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 if (!mNfcAdapter.isEnabled()) {
-                    //mTextView.setText("NFC is disabled.");
                     Snackbar.make(view, "NFC is disabled.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
-                    //mTextView.setText("NFC is enabled.");
                     Snackbar.make(view, "NFC is enabled.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
@@ -65,6 +60,7 @@ public class tela_inicial extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -80,8 +76,9 @@ public class tela_inicial extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.tela_inicial, menu);
-        return true;
+        // Esta funcao adiciona "..." na barra no canto superior direito
+        //getMenuInflater().inflate(R.menu.tela_inicial, menu);
+        return false;
     }
 
     @Override
@@ -107,6 +104,8 @@ public class tela_inicial extends AppCompatActivity
 
         if (id == R.id.nav_lista_checklists) {
             // Ir para a tela inicial (lista de checklists)
+            Intent intent = new Intent(this, tela_inicial.class);
+            startActivity(intent);
         } else if (id == R.id.nav_como_usar) {
             // Ir para a tela de como usar o app
             Intent intent = new Intent(this, ComoUsarActivity.class);

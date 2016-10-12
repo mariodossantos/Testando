@@ -6,24 +6,20 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-public class PremiumActivity extends AppCompatActivity
+import java.util.Arrays;
+
+public class PremiumActivity extends tela_inicial
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView mTextView;
@@ -39,15 +35,6 @@ public class PremiumActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -56,6 +43,11 @@ public class PremiumActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(4).setChecked(true);
+
+        mTextView = (TextView) findViewById(R.id.textViewPremium);
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -109,15 +101,30 @@ public class PremiumActivity extends AppCompatActivity
         try {
             ultralight.connect();
 
-            final byte[] utf8Bytes = tagText.getBytes("UTF-8");
+            /*final byte[] utf8Bytes = tagText.getBytes("UTF-8");
+            int remainingChars = 40 - utf8Bytes.length;
 
-            ultralight.writePage(1, "oi  ".getBytes(Charset.forName("UTF-8")));
-            ultralight.writePage(2, "tudo".getBytes(Charset.forName("UTF-8")));
-            ultralight.writePage(3, " bem".getBytes(Charset.forName("UTF-8")));
-            ultralight.writePage(4, "oi  ".getBytes(Charset.forName("UTF-8")));
+            byte[] blankBytes = new byte[remainingChars];
+            for (int i = 0; i < remainingChars; i++) {
+                blankBytes[i] = ' ';
+            }
+
+            byte[] text = new byte[40];
+            System.arraycopy(utf8Bytes, 0, text, 0, utf8Bytes.length);
+            System.arraycopy(blankBytes, 0, text, utf8Bytes.length, blankBytes.length);*/
+
+            /*int pageNumber = 1;
+            for (int i = 0; i < 40; i=i+4) {
+                ultralight.writePage(pageNumber, Arrays.copyOfRange(text, i, i + 4));
+                pageNumber++;
+            }*/
+
+            //mTextView.setText(text.toString());
+
+            ultralight.writePage(4, "Oi, ".getBytes(Charset.forName("UTF-8")));
             ultralight.writePage(5, "tudo".getBytes(Charset.forName("UTF-8")));
             ultralight.writePage(6, " bem".getBytes(Charset.forName("UTF-8")));
-            ultralight.writePage(7, "?   ".getBytes(Charset.forName("UTF-8")));
+            ultralight.writePage(7, "? :)".getBytes(Charset.forName("UTF-8")));
             ultralight.writePage(8, "oi  ".getBytes(Charset.forName("UTF-8")));
             ultralight.writePage(9, "tudo".getBytes(Charset.forName("UTF-8")));
             ultralight.writePage(10, " bem".getBytes(Charset.forName("UTF-8")));
@@ -139,7 +146,7 @@ public class PremiumActivity extends AppCompatActivity
         MifareUltralight mifare = MifareUltralight.get(tag);
         try {
             mifare.connect();
-            byte[] payload = mifare.readPages(10);
+            byte[] payload = mifare.readPages(4);
             return new String(payload, Charset.forName("UTF-8"));
         } catch (IOException e) {
             mTextView.setText("Erro ao tentar ler tag 1.");
@@ -167,7 +174,7 @@ public class PremiumActivity extends AppCompatActivity
         }
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.premium, menu);
@@ -212,5 +219,5 @@ public class PremiumActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+    }*/
 }

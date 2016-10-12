@@ -12,4 +12,11 @@
     tools:context="com.weebly.taggtracker.tagtracker.PremiumActivity"
     tools:showIn="@layout/app_bar_premium">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aproxime a tag!"
+        android:id="@+id/textViewPremium"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
