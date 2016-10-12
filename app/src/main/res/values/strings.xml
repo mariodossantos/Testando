@@ -6,4 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="explanation">oi</string>
+    <string name="title_activity_compra_tags">CompraTagsActivity</string>
+    <string name="title_activity_como_usar">ComoUsarActivity</string>
+    <string name="title_activity_sobre">SobreActivity</string>
+    <string name="title_activity_premium">PremiumActivity</string>
 </resources>

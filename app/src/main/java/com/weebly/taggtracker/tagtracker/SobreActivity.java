@@ -13,47 +13,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.content.Intent;
-import android.nfc.NfcAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-
-public class tela_inicial extends AppCompatActivity
+public class SobreActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private TextView mTextView;
-    private NfcAdapter mNfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tela_inicial);
+        setContentView(R.layout.activity_sobre);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mTextView = (TextView) findViewById(R.id.textView_explanation);
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
-        if (mNfcAdapter == null) {
-            // Stop here, we definitely need NFC
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            //finish();
-            return;
-        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mNfcAdapter.isEnabled()) {
-                    //mTextView.setText("NFC is disabled.");
-                    Snackbar.make(view, "NFC is disabled.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } else {
-                    //mTextView.setText("NFC is enabled.");
-                    Snackbar.make(view, "NFC is enabled.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -80,7 +55,7 @@ public class tela_inicial extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.tela_inicial, menu);
+        getMenuInflater().inflate(R.menu.sobre, menu);
         return true;
     }
 
@@ -105,24 +80,18 @@ public class tela_inicial extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_lista_checklists) {
-            // Ir para a tela inicial (lista de checklists)
-        } else if (id == R.id.nav_como_usar) {
-            // Ir para a tela de como usar o app
-            Intent intent = new Intent(this, ComoUsarActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_compra_tags) {
-            // Ir para a tela de compra de tags
-            Intent intent = new Intent(this, CompraTagsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_sobre) {
-            // Ir para a tela sobre o app
-            Intent intent = new Intent(this, SobreActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_premium) {
-            // Ir para a tela sobre a versao premium
-            Intent intent = new Intent(this, PremiumActivity.class);
-            startActivity(intent);
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -130,5 +99,3 @@ public class tela_inicial extends AppCompatActivity
         return true;
     }
 }
-
-
