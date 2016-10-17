@@ -90,17 +90,14 @@ public class tela_inicial extends AppCompatActivity
     public void arrumaTabs(){
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //Adicionar as tabs
-        tabLayout.addTab(tabLayout.newTab().setText("CHECKLISTS"));
-        tabLayout.addTab(tabLayout.newTab().setText("TAGS"));
-
-        //tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        Pager adapter = new Pager(getSupportFragmentManager(), tabLayout.getTabCount());
+        Pager adapter = new Pager(getSupportFragmentManager());
+        adapter.addFragment(new tela_checklists(), "CHECKLISTS", false);
+        adapter.addFragment(new tela_tags(), "TAGS", false);
         viewPager.setAdapter(adapter);
-
         tabLayout.setupWithViewPager(viewPager);
 
     }

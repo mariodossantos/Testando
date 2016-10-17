@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Barbara on 17/10/2016.
  *
@@ -11,37 +14,36 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 
 public class Pager extends FragmentStatePagerAdapter {
+    private final List<Fragment> mFragments = new ArrayList<>();
+    private final List<String> mFragmentTitles = new ArrayList<>();
 
-        //integer to count number of tabs
-        int numTabs;
+    public Pager(FragmentManager fm) {
+        super(fm);
+    }
 
-        //Constructor to the class 
-        public Pager(FragmentManager fm, int numTabs) {
-            super(fm);
-            //Initializing tab count
-            this.numTabs= numTabs;
-        }
+    public void addFragment(Fragment fragment, String title) {
+        addFragment(fragment, title, true);
+    }
 
-        //Overriding method getItem
-        @Override
-        public Fragment getItem(int position) {
-            //Returning the current tabs 
-            switch (position) {
-                case 0:
-                    tela_checklists tab1 = new tela_checklists();
-                    return tab1;
-                case 1:
-                    tela_tags tab2 = new tela_tags();
-                    return tab2;
-                default:
-                    return null;
-            }
-        }
+    public void addFragment(Fragment fragment, String title, boolean hasOptionsMenu) {
+        fragment.setHasOptionsMenu(hasOptionsMenu);
+        mFragments.add(fragment);
+        mFragmentTitles.add(title);
 
-        //Overriden method getCount to get the number of tabs 
-        @Override
-        public int getCount() {
-            return numTabs;
-        }
-    
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return mFragments.get(position);
+    }
+
+    @Override
+    public int getCount() {
+        return mFragments.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitles.get(position);
+    }
 }
