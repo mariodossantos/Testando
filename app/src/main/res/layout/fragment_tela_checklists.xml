@@ -2,13 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.weebly.taggtracker.tagtracker.tela_checklists"
-    android:background="@color/colorAccent">
+    tools:context="com.weebly.taggtracker.tagtracker.tela_checklists">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="COLOQUE AQUI AS CHECKLISTS" />
 
 </FrameLayout>

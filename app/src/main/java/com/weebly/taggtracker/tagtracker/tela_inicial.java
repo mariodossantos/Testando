@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 
@@ -49,7 +50,6 @@ public class tela_inicial extends AppCompatActivity
     @Override
     public void onTabReselected(TabLayout.Tab tab) {    }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,15 +59,7 @@ public class tela_inicial extends AppCompatActivity
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        if (mNfcAdapter == null) {
-            // Stop here, we definitely need NFC
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            //finish();
-            return;
-        }
-
         //SOBRE O BOTAO SUBMENU
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,17 +82,27 @@ public class tela_inicial extends AppCompatActivity
 
 
         //SOBRE AS TABS
+        arrumaTabs();
+
+    }
+
+
+    public void arrumaTabs(){
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         //Adicionar as tabs
+        tabLayout.addTab(tabLayout.newTab().setText("CHECKLISTS"));
+        tabLayout.addTab(tabLayout.newTab().setText("TAGS"));
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        //tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         Pager adapter = new Pager(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
 
-        tabLayout.addOnTabSelectedListener (this);
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 
     public void abreMenu(final View _view){
