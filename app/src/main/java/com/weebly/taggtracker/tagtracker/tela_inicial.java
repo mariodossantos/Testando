@@ -5,6 +5,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabItem;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,11 +28,27 @@ import android.widget.Toast;
 
 
 public class tela_inicial extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, TabLayout.OnTabSelectedListener
+    {
 
     private NfcAdapter mNfcAdapter;
     private Dialog dialog;
-  //  private boolean menuExpandido;
+
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +66,8 @@ public class tela_inicial extends AppCompatActivity
             return;
         }
 
+        //SOBRE O BOTAO SUBMENU
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +76,8 @@ public class tela_inicial extends AppCompatActivity
             }
         });
 
+
+        //SOBRE A NAVEGACAO
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -64,6 +87,20 @@ public class tela_inicial extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+
+        //SOBRE AS TABS
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        //Adicionar as tabs
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        Pager adapter = new Pager(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+
+        tabLayout.addOnTabSelectedListener (this);
     }
 
     public void abreMenu(final View _view){
@@ -135,7 +172,6 @@ public class tela_inicial extends AppCompatActivity
     public void carregaAddTags(){
         Toast.makeText(this, "Carrega a tela de add as tags", Toast.LENGTH_LONG).show();
     }
-
 
     //VERIFICA NFC AQUI
     public boolean verificaNFC(View view){
