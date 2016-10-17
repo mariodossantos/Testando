@@ -22,6 +22,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import static java.sql.DriverManager.println;
+
 
 public class tela_inicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,7 +51,6 @@ public class tela_inicial extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 abreMenu(view);
             }
         });
@@ -66,6 +67,8 @@ public class tela_inicial extends AppCompatActivity
     }
 
     public void abreMenu(final View _view){
+        Toast.makeText(this, "Entrou no menu.", Toast.LENGTH_LONG).show();
+
         dialog = new Dialog(tela_inicial.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.menu_fab);
@@ -102,6 +105,15 @@ public class tela_inicial extends AppCompatActivity
     }
 
     public void verificaNFC(View view){
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if (mNfcAdapter == null) {
+            // Stop here, we definitely need NFC
+            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            //finish();
+            return;
+        }
+
         if (!mNfcAdapter.isEnabled()) {
             Snackbar.make(view, "NFC is disabled.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
