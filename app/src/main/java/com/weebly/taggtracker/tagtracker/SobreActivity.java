@@ -7,7 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
-public class SobreActivity extends tela_inicial
+public class SobreActivity extends TelaInicialActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override

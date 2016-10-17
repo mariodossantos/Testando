@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 
 
-public class tela_checklists extends Fragment {
+public class TelaChecklistActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

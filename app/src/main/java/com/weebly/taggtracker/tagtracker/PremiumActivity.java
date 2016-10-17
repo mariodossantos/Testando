@@ -17,9 +17,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import java.util.Arrays;
-
-public class PremiumActivity extends tela_inicial
+public class PremiumActivity extends TelaInicialActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView mTextView;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 
 
-public class tela_tags extends Fragment {
+public class TelaTagsActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

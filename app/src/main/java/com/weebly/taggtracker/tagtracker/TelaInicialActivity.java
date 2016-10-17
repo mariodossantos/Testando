@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -23,12 +22,11 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 
 
-public class tela_inicial extends AppCompatActivity
+public class TelaInicialActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabLayout.OnTabSelectedListener
     {
 
@@ -95,8 +93,8 @@ public class tela_inicial extends AppCompatActivity
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         Pager adapter = new Pager(getSupportFragmentManager());
-        adapter.addFragment(new tela_checklists(), "CHECKLISTS", false);
-        adapter.addFragment(new tela_tags(), "TAGS", false);
+        adapter.addFragment(new TelaChecklistActivity(), "CHECKLISTS", false);
+        adapter.addFragment(new TelaTagsActivity(), "TAGS", false);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -117,7 +115,7 @@ public class tela_inicial extends AppCompatActivity
             fab.setImageResource(ic_menu_close_clear_cancel);
         }
 */
-        dialog = new Dialog(tela_inicial.this);
+        dialog = new Dialog(TelaInicialActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.menu_fab);
 
@@ -208,7 +206,7 @@ public class tela_inicial extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         // Esta funcao adiciona "..." na barra no canto superior direito
-        //getMenuInflater().inflate(R.menu.tela_inicial, menu);
+        //getMenuInflater().inflate(R.menu.TelaInicialActivity, menu);
         return false;
     }
 
@@ -235,7 +233,7 @@ public class tela_inicial extends AppCompatActivity
 
         if (id == R.id.nav_lista_checklists) {
             // Ir para a tela inicial (lista de checklists)
-            Intent intent = new Intent(this, tela_inicial.class);
+            Intent intent = new Intent(this, TelaInicialActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_como_usar) {
             // Ir para a tela de como usar o app

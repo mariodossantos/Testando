@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".tela_inicial"
+            android:name=".TelaInicialActivity"
             android:label="TAGTRACKER"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
