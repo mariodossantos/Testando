@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.widget.Toast;
 
+
 public class tela_inicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
