@@ -1,11 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rsb="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:backgroundTint="#fff"
+    android:layout_marginBottom="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="193dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom">
 
@@ -22,6 +24,8 @@
                 android:id="@+id/btnChecklistsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:background="@color/colorPrimary"
                 android:text="CHECKLISTS"
                 android:layout_centerVertical="true"
                 android:padding="12dp"
@@ -49,6 +53,8 @@
                 android:id="@+id/btnTagsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:background="@color/colorPrimary"
                 android:text="TAGS"
                 android:padding="12dp"
                 android:layout_centerVertical="true"/>
@@ -67,7 +73,7 @@
             android:id="@+id/btnFechaMenu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp">
+            android:layout_margin="@dimen/fab_margin">
 
             <ImageView
                 android:layout_width="wrap_content"

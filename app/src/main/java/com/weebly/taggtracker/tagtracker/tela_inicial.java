@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,6 +23,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import static android.R.drawable.ic_input_add;
+import static android.R.drawable.ic_menu_close_clear_cancel;
 import static java.sql.DriverManager.println;
 
 
@@ -30,6 +33,7 @@ public class tela_inicial extends AppCompatActivity
 
     private NfcAdapter mNfcAdapter;
     private Dialog dialog;
+    private boolean menuExpandido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +71,24 @@ public class tela_inicial extends AppCompatActivity
     }
 
     public void abreMenu(final View _view){
-        Toast.makeText(this, "Entrou no menu.", Toast.LENGTH_LONG).show();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+/*
+        if (menuExpandido == true){
+            menuExpandido = false;
+            fab.setImageResource(ic_input_add);
+            dialog.dismiss();
+            return;
+
+        } else {
+            menuExpandido = true;
+            fab.setImageResource(ic_menu_close_clear_cancel);
+        }
+*/
         dialog = new Dialog(tela_inicial.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.menu_fab);
+
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         Window window = dialog.getWindow();
@@ -90,36 +107,59 @@ public class tela_inicial extends AppCompatActivity
             }
         });
 
+        //Comportamento para menu Checklists
+        View usaBtnChecklists =(View) dialog.findViewById(R.id.btnChecklists);
+        usaBtnChecklists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                carregaAddChecklists();
+            }
+        });
+
         //Comportamento para menu Tags
         View usaBtnTags =(View) dialog.findViewById(R.id.btnTags);
         usaBtnTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verificaNFC(_view);
+                if (verificaNFC(_view))
+                    carregaAddTags();
             }
         });
 
-        // it show the dialog box
+
         dialog.show();
 
     }
 
-    public void verificaNFC(View view){
+    //CARREGA AS TELAS DE ADD AS COISAS AQUI
+    public void carregaAddChecklists(){
+        Toast.makeText(this, "Carrega a tela de add as checklist", Toast.LENGTH_LONG).show();
+    }
+
+    public void carregaAddTags(){
+        Toast.makeText(this, "Carrega a tela de add as tags", Toast.LENGTH_LONG).show();
+    }
+
+
+    //VERIFICA NFC AQUI
+    public boolean verificaNFC(View view){
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (mNfcAdapter == null) {
             // Stop here, we definitely need NFC
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.no_nfc, Toast.LENGTH_LONG).show();
             //finish();
-            return;
+            return false;
         }
 
         if (!mNfcAdapter.isEnabled()) {
-            Snackbar.make(view, "NFC is disabled.", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, R.string.nfc_disabled, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+            return false;
         } else {
-            Snackbar.make(view, "NFC is enabled.", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, R.string.nfc_enabled, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+            return true;
         }
     }
 
