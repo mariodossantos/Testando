@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,9 +22,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import static android.R.drawable.ic_input_add;
-import static android.R.drawable.ic_menu_close_clear_cancel;
-import static java.sql.DriverManager.println;
 
 
 public class tela_inicial extends AppCompatActivity
@@ -33,7 +29,7 @@ public class tela_inicial extends AppCompatActivity
 
     private NfcAdapter mNfcAdapter;
     private Dialog dialog;
-    private boolean menuExpandido;
+  //  private boolean menuExpandido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
