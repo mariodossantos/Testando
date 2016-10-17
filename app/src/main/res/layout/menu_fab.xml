@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rsb="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <RelativeLayout
+            android:id="@+id/btnChecklists"
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/margin_right"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/btnChecklistsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHECKLISTS"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                />
+
+            <!--
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:layout_toRightOf="@+id/btnChecklistsText"
+                android:layout_marginLeft="20dp"/>
+             -->
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/btnTags"
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/margin_right"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/btnTagsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TAGS"
+                android:padding="12dp"
+                android:layout_centerVertical="true"/>
+
+            <!--
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:layout_toRightOf="@+id/btnTagsText"
+                android:layout_marginLeft="20dp"/>
+             -->
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnFechaMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="bottom"
+                android:layout_marginRight="@dimen/cross_margin"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

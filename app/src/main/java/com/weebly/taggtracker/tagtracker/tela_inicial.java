@@ -1,8 +1,11 @@
 package com.weebly.taggtracker.tagtracker;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +18,8 @@ import android.view.MenuItem;
 
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -22,6 +27,7 @@ public class tela_inicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private NfcAdapter mNfcAdapter;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +49,8 @@ public class tela_inicial extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mNfcAdapter.isEnabled()) {
-                    Snackbar.make(view, "NFC is disabled.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } else {
-                    Snackbar.make(view, "NFC is enabled.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+
+                abreMenu(view);
             }
         });
 
@@ -62,6 +63,52 @@ public class tela_inicial extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    public void abreMenu(final View _view){
+        dialog = new Dialog(tela_inicial.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.menu_fab);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams param = window.getAttributes();
+
+        param.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+        dialog.setCanceledOnTouchOutside(true);
+
+
+        //Comportamento para fechar o menu
+        View usaBtnFechar = dialog.findViewById(R.id.btnFechaMenu);
+        usaBtnFechar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        //Comportamento para menu Tags
+        View usaBtnTags =(View) dialog.findViewById(R.id.btnTags);
+        usaBtnTags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verificaNFC(_view);
+            }
+        });
+
+        // it show the dialog box
+        dialog.show();
+
+    }
+
+    public void verificaNFC(View view){
+        if (!mNfcAdapter.isEnabled()) {
+            Snackbar.make(view, "NFC is disabled.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            Snackbar.make(view, "NFC is enabled.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
     @Override
