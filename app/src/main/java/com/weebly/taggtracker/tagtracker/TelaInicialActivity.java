@@ -143,6 +143,7 @@ public class TelaInicialActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 carregaAddChecklists();
+
             }
         });
 
@@ -163,7 +164,10 @@ public class TelaInicialActivity extends AppCompatActivity
 
     //CARREGA AS TELAS DE ADD AS COISAS AQUI
     public void carregaAddChecklists(){
-        Toast.makeText(this, "Carrega a tela de add as checklist", Toast.LENGTH_LONG).show();
+       // Toast.makeText(this, "Carrega a tela de add as checklist", Toast.LENGTH_LONG).show();
+        Intent it = new Intent(TelaInicialActivity.this, MainActivity.class);
+        startActivity(it);
+
     }
 
     public void carregaAddTags(){
@@ -257,6 +261,11 @@ public class TelaInicialActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+
 }
 
 

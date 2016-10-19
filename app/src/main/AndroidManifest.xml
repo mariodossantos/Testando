@@ -49,6 +49,8 @@
             android:name=".PremiumActivity"
             android:label="TAGTRACKER PREMIUM"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Listado"></activity>
     </application>
 
 </manifest>

@@ -5,9 +5,9 @@
     tools:context="com.weebly.taggtracker.tagtracker.TelaChecklistActivity">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="COLOQUE AQUI AS CHECKLISTS" />
-
+        android:id="@+id/listView" />
 </FrameLayout>
