@@ -25,20 +25,21 @@ public final class BancoDeDados  {
             "CREATE TABLE " + tabelaTags.nomeTabela + " (" +
                     tabelaTags.colunaID + " INTEGER PRIMARY KEY," +
                     tabelaTags.colunaTitulo + TEXT_TYPE + " not null ); " +
+
             "CREATE TABLE " + tabelaChecklists.nomeTabela + " (" +
                     tabelaChecklists.colunaID + " INTEGER PRIMARY KEY," +
                     tabelaChecklists.colunaTitulo + TEXT_TYPE + " not null));" +
+
             "CREATE TABLE " + tabelaAssocia.nomeTabela + "( " +
                     tabelaAssocia.tagsID + " int not null, " +
                     tabelaAssocia.checklistsID + " int not null, " +
                     "FOREIGN KEY (" + tabelaAssocia.tagsID + ") REFERENCES tags( " + tabelaTags.colunaID + "), " +
-                    "FOREIGN KEY (" + tabelaAssocia.checklistsID + ") REFERENCES checklists(" + tabelaChecklists.colunaID + ")); "
+                    "FOREIGN KEY (" + tabelaAssocia.checklistsID + ") REFERENCES checklists(" + tabelaChecklists.colunaID + "))";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + tabelaAssocia.nomeTabela + "; " +
             "DROP TABLE IF EXISTS " + tabelaChecklists.nomeTabela + "; " +
             "DROP TABLE IF EXISTS " + tabelaTags.nomeTabela;
-
 
 
     public static abstract class tabelaChecklists implements BaseColumns {
@@ -67,6 +68,7 @@ public final class BancoDeDados  {
         public BancoDeDadosHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
+
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(SQL_CREATE_ENTRIES);
         }
@@ -92,6 +94,7 @@ public final class BancoDeDados  {
         return  bdhelper;
     }
 
+    //INSERÇÃO
     public void insereChecklist(int id, String titulo) {
         // Gets the data repository in write mode
         SQLiteDatabase db = bdhelper.getWritableDatabase();
@@ -143,6 +146,7 @@ public final class BancoDeDados  {
                 values);
     }
 
+    //LEITURA
     public ArrayList<String> leChecklist(){
         ArrayList<String> resp = new ArrayList<String>();
 
@@ -197,15 +201,88 @@ public final class BancoDeDados  {
         return resp;
     }
 
-    public void deletaAssocia(){
+    //REMOÇÃO
+    public void deletaAssocia(int checklistsID, int tagsID){
+        SQLiteDatabase db = bdhelper.getWritableDatabase();
+
+        if (tagsID != 0 && checklistsID != 0){
+            // Define 'where' part of query.
+            String selection = tabelaAssocia.checklistsID + " = ? and " +
+                    tabelaAssocia.tagsID + " = ? ";
+            // Specify arguments in placeholder order.
+            String[] selectionArgs = {String.valueOf(checklistsID), String.valueOf(tagsID)};
+            // Issue SQL statement.
+            db.delete(tabelaAssocia.nomeTabela, selection, selectionArgs);
+        } else if (tagsID == 0) {
+            String selection2 = tabelaAssocia.checklistsID + " = ?";
+            String[] selectionArgs2 = { String.valueOf(checklistsID) };
+            db.delete(tabelaAssocia.nomeTabela, selection2, selectionArgs2);
+        } else if (checklistsID == 0){
+            String selection3 = tabelaAssocia.tagsID + " = ?";
+            String[] selectionArgs3 = { String.valueOf(tagsID) };
+            db.delete(tabelaAssocia.nomeTabela, selection3, selectionArgs3);
+        }
+    }
+
+    public void deletaChecklists(int checklistsID){
         SQLiteDatabase db = bdhelper.getWritableDatabase();
 
         // Define 'where' part of query.
-        String selection = tabelaAssocia.nomeTabela + " LIKE ?";
+        String selection = tabelaChecklists.colunaID + " = ?";
         // Specify arguments in placeholder order.
-        String[] selectionArgs = { String.valueOf(rowId) };
+        String[] selectionArgs = { String.valueOf(checklistsID) };
         // Issue SQL statement.
-        db.delete(tabelaAssocia.nomeTabela, selection, selectionArgs);
+        deletaAssocia(checklistsID, 0);
+        db.delete(tabelaChecklists.nomeTabela, selection, selectionArgs);
+    }
+
+    public void deletaTags(int tagsID){
+        SQLiteDatabase db = bdhelper.getWritableDatabase();
+
+        // Define 'where' part of query.
+        String selection = tabelaTags.colunaID + " = ?";
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { String.valueOf(tagsID) };
+        // Issue SQL statement.
+        deletaAssocia(0, tagsID);
+        db.delete(tabelaTags.nomeTabela, selection, selectionArgs);
+    }
+
+    //ATUALIZAÇÃO
+    public void atualizaChecklists(String titulo, int checklistsID) {
+        SQLiteDatabase db = bdhelper.getReadableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(tabelaChecklists.colunaTitulo, titulo);
+
+        // Which row to update, based on the ID
+        String selection = tabelaChecklists.colunaID + " = ?";
+        String[] selectionArgs = {String.valueOf(checklistsID)};
+
+        int count = db.update(
+                tabelaChecklists.nomeTabela,
+                values,
+                selection,
+                selectionArgs);
+    }
+
+    public void atualizatags(String titulo, int tagsID) {
+        SQLiteDatabase db = bdhelper.getReadableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(tabelaTags.colunaTitulo, titulo);
+
+        // Which row to update, based on the ID
+        String selection = tabelaTags.colunaID + " = ?";
+        String[] selectionArgs = {String.valueOf(tagsID)};
+
+        int count = db.update(
+                tabelaTags.nomeTabela,
+                values,
+                selection,
+                selectionArgs);
     }
 
 }
