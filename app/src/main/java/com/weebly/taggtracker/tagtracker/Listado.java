@@ -33,6 +33,7 @@ public class Listado extends AppCompatActivity {
         listado = ListaPersonas();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listado);
         listView.setAdapter(adapter);
+        HAHHAHAHAHHAHAHAHAHA
     }
 
     private ArrayList<String> ListaPersonas(){
