@@ -19,7 +19,7 @@ public class Listado extends AppCompatActivity {
     ListView listView;
     ArrayList<String> listado;
 
-    
+    KSLJÇSKLJSKLÇSJSKLJÇS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
