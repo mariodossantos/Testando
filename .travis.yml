@@ -20,7 +20,6 @@ before_script:
   - adb shell input keyevent 82 &
   
 
-$git push orign
 script: ./gradlew build connectedCheck
 
   git update-index --chmod=+x gradlew
