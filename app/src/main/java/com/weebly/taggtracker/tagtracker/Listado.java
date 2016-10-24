@@ -27,7 +27,7 @@ public class Listado extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         CargarListado();
-        
+        ggggggggggggggggggggg
     }
     
 
